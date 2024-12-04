@@ -3,3 +3,6 @@
 
 A collection of notebooks and resources of on-chain data specific to the Ionic Protocol. Repo includes notebooks for on-chain tracking: changes in supply and borrowing to vaults across Mode, OP, and Base, emissions tracking (by epoch and quarterly), revenue analysis, etc.
 
+## Notebook Details & Assumptions
+- base_qt_emissions_review.ipynb observes revenues based on changes to [supply and borrows in Base vaults](https://dune.com/mrwildcat/ionic-protocol) since start of emissions. Queries track emissions from [distributor addresses on Base](https://dune.com/queries/4354659).
+- Revenues calculated based on direct and indirect revenue Ionic earns from vaults, less liquidiations/repayments. Estimates are within 1 std of averages.  
