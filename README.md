@@ -8,7 +8,7 @@ A collection of notebooks and resources of on-chain data specific to the Ionic P
 - Revenues calculated based on direct and indirect revenue Ionic earns from vaults, less liquidiations/repayments. Estimates are within 1 std of averages.  
 
 # Colab versions:
-[Daily Prices](https://colab.research.google.com/drive/1Fx-mc15oYvhneCZjJBsFMds6Pcr0NESo?usp=sharing)
-[Emissions Analysis by Epoch](https://colab.research.google.com/drive/1Fx-mc15oYvhneCZjJBsFMds6Pcr0NESo?usp=sharing)
-[Quarterly Emissions Analysis](https://colab.research.google.com/drive/1w5vE_XBC-GAM-JypagmVXwAkgQjD6_oa?usp=sharing)
-[Base Quarterly Emissions Analysis](https://colab.research.google.com/drive/1AKj0aX8pRstYcr5sSJhj422DOLdDbwHy?usp=sharing)
+- [Daily Prices](https://colab.research.google.com/drive/1Fx-mc15oYvhneCZjJBsFMds6Pcr0NESo?usp=sharing)
+- [Emissions Analysis by Epoch](https://colab.research.google.com/drive/1Fx-mc15oYvhneCZjJBsFMds6Pcr0NESo?usp=sharing)
+- [Quarterly Emissions Analysis](https://colab.research.google.com/drive/1w5vE_XBC-GAM-JypagmVXwAkgQjD6_oa?usp=sharing)
+- [Base Quarterly Emissions Analysis](https://colab.research.google.com/drive/1AKj0aX8pRstYcr5sSJhj422DOLdDbwHy?usp=sharing)
