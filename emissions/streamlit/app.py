@@ -137,7 +137,7 @@ if emissions_results is not None and vault_analysis is not None:
 
     # TAB 3
     with tab3:
-        st.subheader("Revenue Analysis")
+        st.subheader("Revenue Analysis (90 Day Lookback)")
         
         try:
             revenue_path = DATA_DIR / "ionic_revenue_analysis.csv"
@@ -146,7 +146,7 @@ if emissions_results is not None and vault_analysis is not None:
             # Display key metrics
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("Total Protocol Revenue", f"${revenue_df['Period_Revenue'].sum():,.2f}")
+                st.metric("Total Protocol Revenue during Period", f"${revenue_df['Period_Revenue'].sum():,.2f}")
                 st.metric("Total Vaults", len(revenue_df))
             with col2:
                 st.metric("Annualized Revenue", f"${revenue_df['Annual_Revenue'].sum():,.2f}")
