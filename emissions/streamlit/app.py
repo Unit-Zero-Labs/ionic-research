@@ -86,84 +86,84 @@ if emissions_results is not None and vault_analysis is not None:
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
-    st.subheader("Vault Analysis Details")
-    
-    # Create size/age distribution table
-    st.subheader("Vault Distribution by Size and Age")
-    
-    # Calculate the number of vaults in each category
-    size_age_dist = pd.crosstab(
-        age_size_analysis['Size Category'],
-        age_size_analysis['Age Category'],
-        values=age_size_analysis['Current Deposits'],
-        aggfunc='sum'
-    ).round(2)
-    
-    # Format the values as currency
-    size_age_dist = size_age_dist.applymap(lambda x: f"${x:,.2f}")
-    
-    # Display the crosstab
-    st.dataframe(size_age_dist, use_container_width=True)
-    
-    # Original vault analysis table
-    st.subheader("Individual Vault Details")
-    formatted_vault_analysis = vault_analysis.copy()
-    for col in formatted_vault_analysis.select_dtypes(include=['float64']).columns:
-        formatted_vault_analysis[col] = formatted_vault_analysis[col].apply(lambda x: f"${x:,.2f}")
-    
-    st.dataframe(
-        formatted_vault_analysis,
-        use_container_width=True,
-        height=400
-    )
+        st.subheader("Vault Analysis Details")
+        
+        # Create size/age distribution table
+        st.subheader("Vault Distribution by Size and Age")
+        
+        # Calculate the number of vaults in each category
+        size_age_dist = pd.crosstab(
+            age_size_analysis['Size Category'],
+            age_size_analysis['Age Category'],
+            values=age_size_analysis['Current Deposits'],
+            aggfunc='sum'
+        ).round(2)
+        
+        # Format the values as currency
+        size_age_dist = size_age_dist.applymap(lambda x: f"${x:,.2f}")
+        
+        # Display the crosstab
+        st.dataframe(size_age_dist, use_container_width=True)
+        
+        # Original vault analysis table
+        st.subheader("Individual Vault Details")
+        formatted_vault_analysis = vault_analysis.copy()
+        for col in formatted_vault_analysis.select_dtypes(include=['float64']).columns:
+            formatted_vault_analysis[col] = formatted_vault_analysis[col].apply(lambda x: f"${x:,.2f}")
+        
+        st.dataframe(
+            formatted_vault_analysis,
+            use_container_width=True,
+            height=400
+        )
 
-# Update the tab3 section:
-with tab3:
-    st.subheader("Raw Data")
-    
-    # Create dropdown for CSV selection
-    csv_option = st.selectbox(
-        'Select CSV to view',
-        ('Emissions Results', 'Vault Analysis', 'Age and Size Analysis')
-    )
-    
-    if csv_option == 'Emissions Results':
-        st.dataframe(
-            emissions_results,
-            use_container_width=True,
-            height=400
+    # Update the tab3 section:
+    with tab3:
+        st.subheader("Raw Data")
+        
+        # Create dropdown for CSV selection
+        csv_option = st.selectbox(
+            'Select CSV to view',
+            ('Emissions Results', 'Vault Analysis', 'Age and Size Analysis')
         )
         
-        st.download_button(
-            label="Download Emissions Results CSV",
-            data=emissions_results.to_csv(index=False),
-            file_name="ionic_emissions_results.csv",
-            mime="text/csv"
-        )
-    elif csv_option == 'Vault Analysis':
-        st.dataframe(
-            vault_analysis,
-            use_container_width=True,
-            height=400
-        )
-        
-        st.download_button(
-            label="Download Vault Analysis CSV",
-            data=vault_analysis.to_csv(index=False),
-            file_name="ionic_vault_analysis.csv",
-            mime="text/csv"
-        )
-    else:  # Age and Size Analysis
-        st.dataframe(
-            age_size_analysis,
-            use_container_width=True,
-            height=400
-        )
-        
-        st.download_button(
-            label="Download Age and Size Analysis CSV",
-            data=age_size_analysis.to_csv(index=False),
-            file_name="ionic_vault_analysis_age_and_size.csv",
-            mime="text/csv"
-        )
+        if csv_option == 'Emissions Results':
+            st.dataframe(
+                emissions_results,
+                use_container_width=True,
+                height=400
+            )
+            
+            st.download_button(
+                label="Download Emissions Results CSV",
+                data=emissions_results.to_csv(index=False),
+                file_name="ionic_emissions_results.csv",
+                mime="text/csv"
+            )
+        elif csv_option == 'Vault Analysis':
+            st.dataframe(
+                vault_analysis,
+                use_container_width=True,
+                height=400
+            )
+            
+            st.download_button(
+                label="Download Vault Analysis CSV",
+                data=vault_analysis.to_csv(index=False),
+                file_name="ionic_vault_analysis.csv",
+                mime="text/csv"
+            )
+        else:  # Age and Size Analysis
+            st.dataframe(
+                age_size_analysis,
+                use_container_width=True,
+                height=400
+            )
+            
+            st.download_button(
+                label="Download Age and Size Analysis CSV",
+                data=age_size_analysis.to_csv(index=False),
+                file_name="ionic_vault_analysis_age_and_size.csv",
+                mime="text/csv"
+            )
 
