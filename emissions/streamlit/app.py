@@ -55,7 +55,7 @@ emissions_results, vault_analysis, age_size_analysis = load_data()
 
 if emissions_results is not None and vault_analysis is not None:
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Base Vaults", "Vault Analysis", "Revenue Analysis", "Raw Data"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Base Vaults", "Vault Analysis", "Revenue Analysis", "Emissions Regressions", "Raw Data"])
 
     # TAB 1
     with tab1:
@@ -273,3 +273,112 @@ if emissions_results is not None and vault_analysis is not None:
                 file_name="ionic_vault_analysis_age_and_size.csv",
                 mime="text/csv"
             )
+
+    #TAB 5
+    with tab5:
+        st.subheader("Emissions Regression Analysis")
+        
+        try:
+            # Load regression results
+            regression_path = DATA_DIR / "ionic_emissions_regression_results.csv"
+            regression_df = pd.read_csv(regression_path)
+            
+            # Create epoch selector
+            epoch = st.selectbox(
+                "Select Epoch",
+                ["Previous Epoch (Oct 15 - Nov 15)", "Current Epoch (Nov 15 - Dec 15)"]
+            )
+            
+            # Create columns for supply and borrow side
+            col1, col2 = st.columns(2)
+            
+            epoch_prefix = "prev" if "Previous" in epoch else "curr"
+            
+            with col1:
+                st.subheader("Supply-Side Impact")
+                
+                # Display supply regression metrics
+                st.markdown("**Supply Regression Statistics:**")
+                if epoch_prefix == "prev":
+                    r2 = 0.3115
+                    n_obs = 18
+                else:
+                    r2 = 0.1131
+                    n_obs = 18
+                    
+                st.metric("R-squared", f"{r2:.4f}")
+                st.metric("Number of Observations", n_obs)
+                
+                # Create supply regression coefficients table
+                if epoch_prefix == "prev":
+                    supply_coef = {
+                        'Variable': ['Constant', 'Emissions (USD)', 'Net APR', 'TVL', 'Chain'],
+                        'Coefficient': [945.1757, -0.5506, 3572.1210, 0.0012, -523.0676],
+                        'P-value': [0.034, 0.278, 0.221, 0.051, 0.128]
+                    }
+                else:
+                    supply_coef = {
+                        'Variable': ['Constant', 'Emissions (USD)', 'Net APR', 'TVL', 'Chain'],
+                        'Coefficient': [-80.6444, -0.0039, 107.1470, -3.629e-06, 29.9433],
+                        'P-value': [0.177, 0.966, 0.685, 0.966, 0.378]
+                    }
+                
+                supply_df = pd.DataFrame(supply_coef)
+                st.dataframe(
+                    supply_df.style.format({
+                        'Coefficient': '{:.4f}',
+                        'P-value': '{:.3f}'
+                    }).background_gradient(subset=['P-value'], cmap='RdYlGn_r'),
+                    use_container_width=True
+                )
+                
+            with col2:
+                st.subheader("Borrow-Side Impact")
+                
+                # Display borrow regression metrics
+                st.markdown("**Borrow Regression Statistics:**")
+                if epoch_prefix == "prev":
+                    r2 = 0.2564
+                    n_obs = 14
+                else:
+                    r2 = 0.2750
+                    n_obs = 13
+                    
+                st.metric("R-squared", f"{r2:.4f}")
+                st.metric("Number of Observations", n_obs)
+                
+                # Create borrow regression coefficients table
+                if epoch_prefix == "prev":
+                    borrow_coef = {
+                        'Variable': ['Constant', 'Emissions (USD)', 'Net APR', 'TVL', 'Chain'],
+                        'Coefficient': [5.8582, 2.07e-05, 2.7813, -2.296e-07, -1.1316],
+                        'P-value': [0.001, 0.963, 0.373, 0.893, 0.444]
+                    }
+                else:
+                    borrow_coef = {
+                        'Variable': ['Constant', 'Emissions (USD)', 'Net APR', 'TVL', 'Chain'],
+                        'Coefficient': [4.2330, 0.0001, 3.0303, -8.695e-07, 0.8418],
+                        'P-value': [0.000, 0.519, 0.163, 0.329, 0.263]
+                    }
+                
+                borrow_df = pd.DataFrame(borrow_coef)
+                st.dataframe(
+                    borrow_df.style.format({
+                        'Coefficient': '{:.4f}',
+                        'P-value': '{:.3f}'
+                    }).background_gradient(subset=['P-value'], cmap='RdYlGn_r'),
+                    use_container_width=True
+                )
+            
+            # Add interpretation
+            st.markdown("---")
+            st.markdown("### Interpretation")
+            st.markdown("""
+            - **P-values < 0.05** indicate statistically significant relationships
+            - **Coefficients** show the direction and magnitude of impact
+            - **R-squared** indicates how much variance is explained by the model
+            - **Borrow-side** results use log-transformed changes for better model fit
+            """)
+            
+        except Exception as e:
+            st.error(f"Error loading regression analysis data: {str(e)}")
