@@ -3,30 +3,20 @@ import pandas as pd
 import plotly.express as px
 import os
 from pathlib import Path
-# Add these debug lines at the top of your app.py
 
-st.write("Current working directory:", os.getcwd())
-st.write("Data directory exists:", os.path.exists("data"))
-st.write("Files in data directory:", os.listdir("data") if os.path.exists("data") else "Data directory not found")
-
-
-
-# Page configuration
+# Page configuration must be the first Streamlit command
 st.set_page_config(
     page_title="Ionic Emissions Analysis",
     page_icon="📊",
     layout="wide"
 )
 
-# Define data directory path
-DATA_DIR = Path("data")
-
 # Load CSVs
 @st.cache_data
 def load_data():
     try:
-        emissions_results = pd.read_csv("streamlit/data/ionic_emissions_results.csv")
-        vault_analysis = pd.read_csv("streamlit/data/ionic_vault_analysis.csv")
+        emissions_results = pd.read_csv("data/ionic_emissions_results.csv")
+        vault_analysis = pd.read_csv("data/ionic_vault_analysis.csv")
         return emissions_results, vault_analysis
     except Exception as e:
         st.error(f"Error loading data: {e}")
