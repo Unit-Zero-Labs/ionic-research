@@ -18,9 +18,9 @@ with st.expander("About this Analysis", expanded=True):
     This dashboard presents analysis of emissions impact on Ionic Protocol metrics. The data tracks changes 
     in supply and borrowing across vaults on Mode, OP, and Base networks, along with emissions tracking and revenue analysis. Currently Base only.
     
-    📊 **Data Source**: All analysis is based on on-chain data from the Ionic Protocol.
+    📊 **Data Source**: Data primarily sourced from Dune Analytics. Click the repo for links to queries.
     
-    🔍 **View Source**: [GitHub Repository](https://github.com/Unit-Zero-Labs/ionic-research/tree/main)
+    🔍 **View Source**: [Ionic Research Github](https://github.com/Unit-Zero-Labs/ionic-research/tree/main)
     
     *For more details about the analysis methodology and assumptions, please visit the GitHub repository.*
     """)
