@@ -301,7 +301,7 @@ if emissions_results is not None and vault_analysis is not None:
                     (regression_df['side'] == 'supply')
                 ]
                 
-                # Get R-squared and n_obs (same for all rows of same group)
+                # Get R-squared and n_obs
                 r2 = supply_data['r_squared'].iloc[0]
                 n_obs = supply_data['n_observations'].iloc[0]
                 
@@ -310,20 +310,12 @@ if emissions_results is not None and vault_analysis is not None:
                 st.metric("Number of Observations", n_obs)
                 
                 # Create coefficient table
-                supply_table = supply_data[['variable', 'coefficient', 'p_value']].copy()
-                supply_table['significant'] = supply_table['p_value'] < 0.05
-                
-                # Format the table
                 st.markdown("**Regression Coefficients:**")
-                styled_supply = supply_table[['variable', 'coefficient', 'p_value']].style\
-                    .format({
-                        'coefficient': '{:.4f}',
-                        'p_value': '{:.4f}'
-                    })\
-                    .apply(lambda x: ['background-color: #90EE90' if v else '' 
-                                    for v in supply_table['significant']], axis=1)
-                
-                st.dataframe(styled_supply, use_container_width=True)
+                supply_table = supply_data[['variable', 'coefficient', 'p_value']].copy()
+                supply_table['coefficient'] = supply_table['coefficient'].round(4)
+                supply_table['p_value'] = supply_table['p_value'].round(4)
+                supply_table['Significant'] = supply_table['p_value'] < 0.05
+                st.dataframe(supply_table, use_container_width=True)
                 
             with col2:
                 st.subheader("Borrow-Side Impact")
@@ -341,28 +333,20 @@ if emissions_results is not None and vault_analysis is not None:
                 st.metric("Number of Observations", n_obs)
                 
                 # Create coefficient table
-                borrow_table = borrow_data[['variable', 'coefficient', 'p_value']].copy()
-                borrow_table['significant'] = borrow_table['p_value'] < 0.05
-                
-                # Format the table
                 st.markdown("**Regression Coefficients:**")
                 st.markdown("*(Log-transformed changes)*")
-                styled_borrow = borrow_table[['variable', 'coefficient', 'p_value']].style\
-                    .format({
-                        'coefficient': '{:.4f}',
-                        'p_value': '{:.4f}'
-                    })\
-                    .apply(lambda x: ['background-color: #90EE90' if v else '' 
-                                    for v in borrow_table['significant']], axis=1)
-                
-                st.dataframe(styled_borrow, use_container_width=True)
+                borrow_table = borrow_data[['variable', 'coefficient', 'p_value']].copy()
+                borrow_table['coefficient'] = borrow_table['coefficient'].round(4)
+                borrow_table['p_value'] = borrow_table['p_value'].round(4)
+                borrow_table['Significant'] = borrow_table['p_value'] < 0.05
+                st.dataframe(borrow_table, use_container_width=True)
             
             # Add interpretation section
             st.markdown("---")
             st.markdown("### Interpretation Guide")
             st.markdown("""
             - **Coefficients** show the impact of each variable on deposit/borrow changes
-            - **P-values < 0.05** indicate statistically significant relationships (highlighted in green)
+            - **P-values < 0.05** indicate statistically significant relationships
             - **R-squared** shows how much of the variation is explained by the model
             - **Borrow-side** analysis uses log-transformed changes for better model fit
             
