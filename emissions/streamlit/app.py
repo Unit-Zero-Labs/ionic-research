@@ -55,8 +55,9 @@ emissions_results, vault_analysis, age_size_analysis = load_data()
 
 if emissions_results is not None and vault_analysis is not None:
 
-    tab1, tab2, tab3 = st.tabs(["Base Vaults", "Vault Analysis", "Raw Data"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Base Vaults", "Vault Analysis", "Revenue Analysis", "Raw Data"])
 
+    # TAB 1
     with tab1:
         # Display key metrics in columns
         metrics = emissions_results.set_index('Metric')['Value']
@@ -101,6 +102,7 @@ if emissions_results is not None and vault_analysis is not None:
         
         st.plotly_chart(fig, use_container_width=True)
 
+    # TAB 2
     with tab2:
         st.subheader("Vault Analysis Details")
         
@@ -133,8 +135,9 @@ if emissions_results is not None and vault_analysis is not None:
             height=400
         )
 
-    # Update the tab3 section:
+    # TAB 3
     with tab3:
+
         st.subheader("Raw Data")
         
         # Create dropdown for CSV selection
@@ -183,3 +186,90 @@ if emissions_results is not None and vault_analysis is not None:
                 mime="text/csv"
             )
 
+    #TAB 4
+    with tab4:
+        st.subheader("Revenue Analysis")
+        
+        try:
+            revenue_path = DATA_DIR / "ionic_revenue_analysis.csv"
+            revenue_df = pd.read_csv(revenue_path)
+            
+            # Display key metrics
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Total Protocol Revenue", f"${revenue_df['Period_Revenue'].sum():,.2f}")
+                st.metric("Total Vaults", len(revenue_df))
+            with col2:
+                st.metric("Annualized Revenue", f"${revenue_df['Annual_Revenue'].sum():,.2f}")
+                st.metric("Revenue-Generating Vaults", len(revenue_df[revenue_df['Period_Revenue'] > 0]))
+            with col3:
+                avg_util = revenue_df['Avg_Utilization'].mean() * 100
+                avg_apr = revenue_df['Effective_Borrow_APR'].mean()
+                st.metric("Average Utilization", f"{avg_util:.1f}%")
+                st.metric("Average Borrow APR", f"{avg_apr:.1f}%")
+
+            # Network breakdown
+            st.subheader("Revenue by Network")
+            network_metrics = []
+            for network in revenue_df['network'].unique():
+                network_data = revenue_df[revenue_df['network'] == network]
+                network_metrics.append({
+                    'Network': network,
+                    'Period Revenue': f"${network_data['Period_Revenue'].sum():,.2f}",
+                    'Annualized Revenue': f"${network_data['Annual_Revenue'].sum():,.2f}",
+                    'Avg Utilization': f"{network_data['Avg_Utilization'].mean() * 100:.1f}%",
+                    'Avg Borrow APR': f"{network_data['Effective_Borrow_APR'].mean():.1f}%",
+                    'Active/Total Vaults': f"{len(network_data[network_data['Period_Revenue'] > 0])}/{len(network_data)}"
+                })
+            st.dataframe(pd.DataFrame(network_metrics).set_index('Network'))
+
+            # Visualizations
+            network_colors = {'Mode': '#1f77b4', 'Base': '#2ca02c', 'Optimism': '#ff7f0e'}
+            
+            # 1. Revenue Distribution Treemap
+            fig1 = px.treemap(
+                revenue_df[revenue_df['Period_Revenue'] > 0],
+                path=[px.Constant("All Networks"), 'network', 'vaultName'],
+                values='Period_Revenue',
+                color='Effective_Borrow_APR',
+                color_continuous_scale='Viridis',
+                title='Protocol Revenue Distribution'
+            )
+            st.plotly_chart(fig1, use_container_width=True)
+
+            # 2. Revenue vs Utilization
+            fig2 = px.scatter(
+                revenue_df,
+                x='Avg_Utilization',
+                y='Period_Revenue',
+                color='network',
+                color_discrete_map=network_colors,
+                title='Revenue vs Utilization',
+                hover_data=['vaultName']
+            )
+            st.plotly_chart(fig2, use_container_width=True)
+
+            # 3. APR Distribution
+            fig3 = px.violin(
+                revenue_df,
+                x='network',
+                y='Effective_Borrow_APR',
+                color='network',
+                color_discrete_map=network_colors,
+                box=True,
+                title='APR Distribution by Network'
+            )
+            st.plotly_chart(fig3, use_container_width=True)
+
+            # 4. Network Revenue Share
+            fig4 = px.pie(
+                values=revenue_df.groupby('network')['Period_Revenue'].sum(),
+                names=revenue_df.groupby('network')['Period_Revenue'].sum().index,
+                title='Network Revenue Share',
+                color=revenue_df.groupby('network')['Period_Revenue'].sum().index,
+                color_discrete_map=network_colors
+            )
+            st.plotly_chart(fig4, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Error loading revenue analysis data: {str(e)}")
