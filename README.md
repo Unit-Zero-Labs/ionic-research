@@ -6,12 +6,13 @@ A collection of notebooks and resources of on-chain data specific to the Ionic P
 - [Tokenomics Model](https://docs.google.com/spreadsheets/d/1tWPMKIqRxg_noABRmQLhti0qXwG3c8bM30bvdzvxruE/edit?usp=sharing)
 
 # Data
+
 ## Dune
 - [Ionic Protocol](https://dune.com/mrwildcat/ionic-protocol)
 - [Daily Emissions](https://dune.com/queries/4354659)
 - [Post Reward User Behavior](https://dune.com/queries/4365031)
   
-# Colab versions
+# Colab Notebooks
 
 ## Prices
 - [Daily Prices](https://colab.research.google.com/drive/1Fx-mc15oYvhneCZjJBsFMds6Pcr0NESo?usp=sharing)
