@@ -315,17 +315,15 @@ if emissions_results is not None and vault_analysis is not None:
                 
                 # Format the table
                 st.markdown("**Regression Coefficients:**")
-                st.dataframe(
-                    supply_table.style
+                styled_supply = supply_table[['variable', 'coefficient', 'p_value']].style\
                     .format({
                         'coefficient': '{:.4f}',
                         'p_value': '{:.4f}'
-                    })
+                    })\
                     .apply(lambda x: ['background-color: #90EE90' if v else '' 
-                                    for v in x['significant']], axis=1)
-                    .hide(columns=['significant']),
-                    use_container_width=True
-                )
+                                    for v in supply_table['significant']], axis=1)
+                
+                st.dataframe(styled_supply, use_container_width=True)
                 
             with col2:
                 st.subheader("Borrow-Side Impact")
@@ -349,17 +347,15 @@ if emissions_results is not None and vault_analysis is not None:
                 # Format the table
                 st.markdown("**Regression Coefficients:**")
                 st.markdown("*(Log-transformed changes)*")
-                st.dataframe(
-                    borrow_table.style
+                styled_borrow = borrow_table[['variable', 'coefficient', 'p_value']].style\
                     .format({
                         'coefficient': '{:.4f}',
                         'p_value': '{:.4f}'
-                    })
+                    })\
                     .apply(lambda x: ['background-color: #90EE90' if v else '' 
-                                    for v in x['significant']], axis=1)
-                    .hide(columns=['significant']),
-                    use_container_width=True
-                )
+                                    for v in borrow_table['significant']], axis=1)
+                
+                st.dataframe(styled_borrow, use_container_width=True)
             
             # Add interpretation section
             st.markdown("---")
