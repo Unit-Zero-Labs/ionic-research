@@ -55,7 +55,7 @@ emissions_results, vault_analysis, age_size_analysis = load_data()
 
 if emissions_results is not None and vault_analysis is not None:
 
-    tab1, tab2, tab3 = st.tabs(["Key Metrics", "Vault Analysis", "Raw Data"])
+    tab1, tab2, tab3 = st.tabs(["Base Vaults", "Vault Analysis", "Raw Data"])
 
     with tab1:
         # Display key metrics in columns
