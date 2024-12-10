@@ -55,7 +55,7 @@ emissions_results, vault_analysis, age_size_analysis = load_data()
 
 if emissions_results is not None and vault_analysis is not None:
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Base Vaults", "Vault Analysis", "Revenue Analysis", "Emissions Regressions", "Raw Data"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Base Vaults", "Vault Analysis", "Revenue Analysis", "Raw Data", "Emissions Regressions"])
 
     # TAB 1
     with tab1:
