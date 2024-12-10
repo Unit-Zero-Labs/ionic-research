@@ -11,37 +11,19 @@ st.set_page_config(
     layout="wide"
 )
 
-# Debug information to help locate files
-st.write("Current working directory:", os.getcwd())
-st.write("Files in current directory:", os.listdir())
-if os.path.exists("data"):
-    st.write("Files in data directory:", os.listdir("data"))
-else:
-    st.write("'data' directory not found")
+# Get the absolute path to the data directory
+SCRIPT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = SCRIPT_DIR / "data"
 
 # Load CSVs with explicit error handling
 @st.cache_data
 def load_data():
     try:
-        # Try different possible paths
-        possible_paths = [
-            "data/ionic_emissions_results.csv",  # If in streamlit/data/
-            "../emissions/data/ionic_emissions_results.csv",  # If in emissions/data/
-            "../data/ionic_emissions_results.csv"  # If in root/data/
-        ]
+        emissions_path = DATA_DIR / "ionic_emissions_results.csv"
+        vault_path = DATA_DIR / "ionic_vault_analysis.csv"
         
-        emissions_path = None
-        vault_path = None
-        
-        for path in possible_paths:
-            if os.path.exists(path):
-                emissions_path = path
-                vault_path = path.replace("emissions_results", "vault_analysis")
-                st.success(f"Found CSV files at: {path}")
-                break
-        
-        if emissions_path is None:
-            raise FileNotFoundError("Could not find CSV files in any expected location")
+        if not emissions_path.exists() or not vault_path.exists():
+            raise FileNotFoundError(f"CSV files not found in {DATA_DIR}")
             
         emissions_results = pd.read_csv(emissions_path)
         vault_analysis = pd.read_csv(vault_path)
