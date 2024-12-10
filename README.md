@@ -2,10 +2,14 @@
 
 A collection of notebooks and resources of on-chain data specific to the Ionic Protocol. Repo includes notebooks for on-chain tracking: changes in supply and borrowing to vaults across Mode, OP, and Base, emissions tracking (by epoch and quarterly), revenue analysis, etc.
 
+# Tokenomics
+- [Tokenomics Model](https://docs.google.com/spreadsheets/d/1tWPMKIqRxg_noABRmQLhti0qXwG3c8bM30bvdzvxruE/edit?usp=sharing)
+
 # Data
-- [Dune Ionic Protocol](https://dune.com/mrwildcat/ionic-protocol)
-- [Dune Daily Emissions](https://dune.com/queries/4354659)
-- [Dune Post Reward User Behavior](https://dune.com/queries/4365031)
+## Dune
+- [Ionic Protocol](https://dune.com/mrwildcat/ionic-protocol)
+- [Daily Emissions](https://dune.com/queries/4354659)
+- [Post Reward User Behavior](https://dune.com/queries/4365031)
   
 # Colab versions
 
