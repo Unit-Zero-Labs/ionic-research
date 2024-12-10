@@ -333,8 +333,7 @@ if emissions_results is not None and vault_analysis is not None:
                 st.metric("Number of Observations", n_obs)
                 
                 # Create coefficient table
-                st.markdown("**Regression Coefficients:**")
-                st.markdown("*(Log-transformed changes)*")
+                st.markdown("**Regression Coefficients (Log-transformed):**")
                 borrow_table = borrow_data[['variable', 'coefficient', 'p_value']].copy()
                 borrow_table['coefficient'] = borrow_table['coefficient'].round(4)
                 borrow_table['p_value'] = borrow_table['p_value'].round(4)
