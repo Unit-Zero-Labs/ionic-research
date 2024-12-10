@@ -175,6 +175,17 @@ if emissions_results is not None and vault_analysis is not None:
             # Visualizations
             network_colors = {'Mode': '#1f77b4', 'Base': '#2ca02c', 'Optimism': '#ff7f0e'}
             
+            #1. Revenue Distribution Treemap
+            fig1 = px.treemap(
+                revenue_df[revenue_df['Period_Revenue'] > 0],
+                path=[px.Constant("All Networks"), 'network', 'vaultName'],
+                values='Period_Revenue',
+                color='Effective_Borrow_APR',
+                color_continuous_scale='Viridis',
+                title='Protocol Revenue Distribution'
+            )
+            st.plotly_chart(fig1, use_container_width=True)
+
             ## 2. Revenue vs Utilization
             fig2 = px.scatter(
                 revenue_df,
@@ -210,16 +221,8 @@ if emissions_results is not None and vault_analysis is not None:
             st.plotly_chart(fig4, use_container_width=True)
 
         except Exception as e:
-            st.error(f"Error loading revenue analysis data: {str(e)}") 1. Revenue Distribution Treemap
-            fig1 = px.treemap(
-                revenue_df[revenue_df['Period_Revenue'] > 0],
-                path=[px.Constant("All Networks"), 'network', 'vaultName'],
-                values='Period_Revenue',
-                color='Effective_Borrow_APR',
-                color_continuous_scale='Viridis',
-                title='Protocol Revenue Distribution'
-            )
-            st.plotly_chart(fig1, use_container_width=True)
+            st.error(f"Error loading revenue analysis data: {str(e)}") 
+         
 
     #TAB 4
     with tab4:
