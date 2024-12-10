@@ -4,18 +4,34 @@ import plotly.express as px
 import os
 from pathlib import Path
 
-# Page configuration must be the first Streamlit command
 st.set_page_config(
     page_title="Ionic Emissions Analysis",
     page_icon="📊",
     layout="wide"
 )
 
-# Get the absolute path to the data directory
+#  description section
+st.title("Ionic Protocol Emissions Analysis")
+
+with st.expander("About this Analysis", expanded=True):
+    st.markdown("""
+    This dashboard presents analysis of emissions impact on Ionic Protocol metrics. The data tracks changes 
+    in supply and borrowing across vaults on Mode, OP, and Base networks, along with emissions tracking and revenue analysis. Currently Base only.
+    
+    📊 **Data Source**: All analysis is based on on-chain data from the Ionic Protocol.
+    
+    🔍 **View Source**: [GitHub Repository](https://github.com/Unit-Zero-Labs/ionic-research/tree/main)
+    
+    *For more details about the analysis methodology and assumptions, please visit the GitHub repository.*
+    """)
+
+st.markdown("---")
+
+#  absolute path to the data directory
 SCRIPT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = SCRIPT_DIR / "data"
 
-# Load CSVs with explicit error handling
+# load CSVs
 @st.cache_data
 def load_data():
     try:
