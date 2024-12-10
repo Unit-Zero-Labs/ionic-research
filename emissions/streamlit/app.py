@@ -25,8 +25,8 @@ DATA_DIR = Path("data")
 @st.cache_data
 def load_data():
     try:
-        emissions_results = pd.read_csv(DATA_DIR / "ionic_emissions_results.csv")
-        vault_analysis = pd.read_csv(DATA_DIR / "ionic_vault_analysis.csv")
+        emissions_results = pd.read_csv("streamlit/data/ionic_emissions_results.csv")
+        vault_analysis = pd.read_csv("streamlit/data/ionic_vault_analysis.csv")
         return emissions_results, vault_analysis
     except Exception as e:
         st.error(f"Error loading data: {e}")
